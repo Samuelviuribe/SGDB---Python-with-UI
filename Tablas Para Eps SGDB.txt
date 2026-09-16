@@ -1,0 +1,72 @@
+CREATE TABLE User_Paciente(
+INT ID_User_Paciente PRIMARY KEY NOT NULL,
+INT ID_DOC_Paciente UNIQUE NOT NULL,
+VARCHAR(25) Nombres_Paciente NOT NULL,
+VARCHAR(25) Apellidos_Paciente NOT NULL,
+DATE Fecha_Nacimiento_Paciente NOT NULL,
+VARCHAR(30) Numero_Telefonico_Paciente NOT NULL UNIQUE,
+VARCHAR(50) Correo_Electronico_Paciente NOT NULL UNIQUE,
+VARCHAR(10) Estado_Afiliacion NOT NULL CHECK (Estado_Afiliacion IN ('activo', 'inactivo', 'suspendido'))
+);//detalles como el tipo de identificacion entre CC, TI, O cedula extranejera/pasaporte pueden ser agregados mas Adelante. 
+
+
+CREATE TABLE Sede (
+INT ID_SEDE PRIMARY KEY NOT NULL,
+VARCHAR(50) Nombre_Sede UNIQUE NOT NULL,
+VARCHAR(50) Direccion_Sede UNIQUE NOT NULL,
+INT Capacidad_Sede NOT NULL,
+VARCHAR(20) Disponibilidad_Sede NOT NULL CHECK (Disponibilidad_Sede IN ('Activa','Inactiva'))
+);
+
+
+CREATE TABLE User_Empleado(
+INT ID_User_Empleado PRIMARY KEY NOT NULL,
+INT ID_DOC_Empleado UNIQUE NOT NULL,
+VARCHAR(25) Nombres_Empleado NOT NULL,
+VARCHAR(25) Apellidos_Empleado NOT NULL,
+DATE Fecha_Nacimiento_Empleado NOT NULL,
+VARCHAR(30) Numero_Telefonico_Empleado NOT NULL UNIQUE,
+VARCHAR(50) Correo_Electronico_Empleado NOT NULL UNIQUE,
+INT ID_Cargo_Empleado NOT NULL //llave foranea unu
+);
+
+
+CREATE TABLE Cargo (
+INT ID_Cargo PRIMARY KEY NOT NULL,
+VARCHAR(30) Nombre_Cargo UNIQUE NOT NULL,
+VARCHAR(200) Descripcion_Cargo NOT NULL,
+VARCHAR(200) Funciones_Cargo NOT NULL
+);
+
+
+CREATE TABLE Consulta(
+INT ID_Consulta PRIMARY KEY NOT NULL,
+DATE Fecha_Consulta NOT NULL, 
+INT Sede_Consulta_ID NOT NULL, //llave foranea D: 
+INT Paciente_Consulta_ID NOT NULL, //llave foranea :D 
+INT Empleado_Consulta_ID NOT NULL, //llave foranea D: 
+);
+
+
+
+CREATE TABLE Equipo(
+INT ID_Equipo PRIMARY KEY NOT NULL,
+VARCHAR(100) Nombre_Equipo NOT NULL,
+DATE Fecha_llegada NOT NULL,
+INT ID_Sede_Equipo NOT NULL,
+INT ID_Empleado_Responsable NOT NULL,
+VARCHAR(10) Estado NOT NULL CHECK (Estado IN ('Habilitada','Deshabilitada','Dañada','De Intercambio'))
+);
+
+
+CREATE TABLE Insumo_Empleado(
+INT ID_Insumo PRIMARY KEY NOT NULL,
+VARCHAR(100) Nombre_Insumo NOT NULL,	
+DATE Fecha_Entrega NOT NULL,
+INT ID_Sede_Entrega_Insumo NOT NULL,
+INT Cantidad_Material NOT NULL,
+INT Destinatario_Personal_ID NOT NUll
+);
+
+
+	
