@@ -2,6 +2,41 @@
 
 lista_tablas = []
 
+def Crear_tabla(entrada):
+
+    #comando_usuario = input("Instruccion de Creacion de tabla ");
+    comando = entrada.split()
+
+    #print(partes[0]+' '+partes[1]);
+    #print(comando_crear)
+    #print(partes[-1]);   
+    
+    if(len(comando) == 3):
+         
+        if (comando[0] == "CREAR"):
+            if (comando[1] == "TABLA"):
+
+                temp_tab = False
+                for tabla in lista_tablas:
+                    if(tabla["Nombre"] == comando[2]):
+                        temp_tab = True
+
+                if temp_tab:
+                    print("La tabla ya existe")
+                else:
+                    nombre_tabla = {
+                        "Nombre":comando[2],
+                        "Columnas":{}, 
+                        "Registros":[]
+                        } 
+                    
+                    lista_tablas.append(nombre_tabla)
+                    print("Tabla creada con exito!")
+
+        else:
+            print("Comando Incorrecto En " + comando[0] +' '+ comando[1] )
+    else:
+        print("Entrada Incorrecta")
 
 def agregar_columna(entrada):
         #esperar a ejecutar sentencia esperada "CREAR COLUMNA Nombre_tabla Nombre_columna Tipo_dato"
@@ -23,47 +58,18 @@ def agregar_columna(entrada):
                             if(nombre_columna == columna[3]):
                                 columna_repetida = bool(1)
                         if(columna_repetida == True):
-                            print("Columna ya existe")
+                            print("Columna ya existe ")
                         else:
                             tabla["Columnas"][columna[3]] = columna[4]
                             print(tabla)
                 if(temp == False):
-                    print("Tabla no encontrada")
+                    print("Tabla no encontrada",lista_tablas)
             else: 
-                print("Instruccion Incorrecta")
+                print("Instruccion Incorrecta ")
         else:
             print("Comando equivocado para agregar columna")
 
 
-def Crear_tabla(entrada):
-
-    #comando_usuario = input("Instruccion de Creacion de tabla ");
-    partes = entrada.split()
-
-    #print(partes[0]+' '+partes[1]);
-    #print(comando_crear)
-    #print(partes[-1]);   
-    
-    if(len(partes) == 3):
-        comando_crear = partes[0]+' '+partes[1];
-        if (comando_crear == "CREAR TABLA"):
-            print("Tabla creada con exito!")
-
-            nombre_tabla = {"Nombre":partes[2], "Columnas":{}, "Registros":[]} 
-            """nombre_tabla = {"Nombre":partes[2],"ID_User_Paciente":int,"ID_DOC_Paciente":int,
-                            "Nombres_Paciente":str,"Apellidos_Paciente ":str,
-                            "Fecha_Nacimiento_Paciente":str,"Numero_Telefonico_Paciente":str,
-                            "Correo_Electronico_Paciente":str,"Estado_Afiliacion":str} """
-            #print(nombre_tabla)
-
-            lista_tablas.append(nombre_tabla)
-            print(lista_tablas)
-
-            #agregar_columna()
-        else:
-            print("Comando Incorrecto")
-    else:
-        print("Comando Incorrecto")
 
 
 
@@ -74,8 +80,11 @@ def modificar_tablas_columnas(entrada):
     
     comando = entrada.split();
     
-    temp=''
-    if (len(comando) == 4):
+    if (len(comando) < 4):
+       print("Entrada incompleta")
+
+    elif (len(comando) == 4):
+        temp=''
         if(comando[0] == "MODIFICAR"):
             if (comando[1]== "TABLA"):
 
@@ -85,15 +94,15 @@ def modificar_tablas_columnas(entrada):
         
                 if(temp != ''):
                     print("Elemento Encontrado")        
-                    tabla["Nombre"] = comando[3] #aqui se cambia el nombre 
+                    temp["Nombre"] = comando[3] #aqui se cambia el nombre 
                     print(lista_tablas)
                 else: 
                     print("Elemento No Encontrado")
 
             else:
-                print("Comando Incorrecto")
+                print("Comando Incorrecto " + comando[1])
         else:
-            print("Comando Incorrecto")
+            print("Comando Incorrecto " + comando[0])
 
     # MODIFICAR COLUMNA Nombre_Tabla Nombre_Columna Nuevo_Nombre (5)
 
@@ -111,17 +120,17 @@ def modificar_tablas_columnas(entrada):
                 
 
                 if(temp_list == ''):
-                    print('Lista no encontrada')
+                    print("Lista no encontrada", lista_tablas)
                 else:
                     for columna in temp_list["Columnas"]:
                         if(columna == comando[3]):
                             temp_col = columna
 
                 if(temp_col == ''):
-                    print("Columna no encontrada")
+                    print("Columna no encontrada", temp_list["Columnas"])
                 else:
                     temp_list["Columnas"][comando[4]] = temp_list["Columnas"].pop(temp_col)
-                    print(lista_tablas)
+                    print("Nombre de columna modificado con exito",lista_tablas)
 
 
         # MOFIFICAR COLUMNA Nombre_Tabla Nombre_Columna TYPE Nuevo_Nombre_Type (6)
@@ -138,7 +147,7 @@ def modificar_tablas_columnas(entrada):
                         temp_list=tabla
 
                 if(temp_list == ''):
-                    print('Lista no encontrada')
+                    print("Lista no encontrada ", lista_tablas)
                 else:
                     for columna in temp_list["Columnas"]:
                         if(columna == comando[3]):
@@ -146,12 +155,12 @@ def modificar_tablas_columnas(entrada):
 
                 if (comando[4] == "TYPE"):
                     if(temp_col == ''):
-                        print("Columna no encontrada")
+                        print("Columna no encontrada ", temp_list["Columnas"])
                     else:
                         temp_list["Columnas"][temp_col] = comando[5]
-                        print(lista_tablas)
+                        print("Tipo de Columna modificado con exito ", lista_tablas)
                 else:
-                    print("Instruccion Incorrecta")
+                    print("Instruccion Incorrecta" + comando[4])
 
                      
 def Eliminar_Tablas_Columnas(entrada):
@@ -190,7 +199,7 @@ def Eliminar_Tablas_Columnas(entrada):
                         temp_list = tabla
 
                 if(temp_list == ''):
-                    print(temp_list + '  Tabla no encontrada')
+                    print(temp_list, '  Tabla no encontrada')
                 else:
                     for columna in temp_list["Columnas"]:
                         if(columna == comando[3]):
@@ -211,37 +220,39 @@ def insertar_registros(entrada):
 
     temp_list = ''
     
+    if (len(comando) == 5):
+        if(comando[0] == 'INSERTAR'):
+            if(comando[1] == 'EN'):
 
-    if(comando[0] == 'INSERTAR'):
-        if(comando[1] == 'EN'):
+                for tabla in lista_tablas:
+                    if(tabla["Nombre"] == comando[2]):
+                        temp_list = tabla   
 
-            for tabla in lista_tablas:
-                if(tabla["Nombre"] == comando[2]):
-                    temp_list = tabla
+                if(temp_list != ''):
+                    
+                    registro = {}
+                    temp_columna= ''
+                    temp_valor= ''
 
-            if(temp_list != ''):
-               
-                        
+                    for i in range(3, len(comando),2):
+                        temp_columna = comando[i]
+                        temp_valor = comando[i+1]
 
-                registro = {}
-                temp_columna= ''
-                temp_valor= ''
+                        if(temp_columna in temp_list["Columnas"]):
+                            registro[temp_columna] = temp_valor
+                         
 
-                for i in range(3, len(comando),2):
-                    temp_columna = comando[i]
-                    temp_valor = comando[i+1]
-
-                    if(temp_columna in temp_list["Columnas"]):
-                        registro[temp_columna] = temp_valor
+                    if(registro == {}):
+                        print("Columna no encontrada ", temp_list["Columnas"])
                     else:
-                        print("Columna no encontrada")
+                        temp_list["Registros"].append(registro)
+                        print(lista_tablas)
 
-                temp_list["Registros"].append(registro)
-                print(lista_tablas)
-
-            else:
-                print("Tabla no existe")
-                print(lista_tablas)
+                else:
+                    print("Tabla no existe")
+                    print(lista_tablas)
+    else: 
+        print("Entrada Incorrecta")
             
 
 # CONSULTAR Nombre_Tabla
@@ -251,22 +262,26 @@ def Consultar_Registros(entrada):
     temp = ''   
 
     if(len(comando)== 2):
-        if(comando[0] == 'CONSULTAR'):
+        if(comando[0] == "CONSULTAR" and comando[1] == "REGISTROS"):
+            print("Entrada Incompleta")
+
+        elif(comando[0] == "CONSULTAR"):
 
             for tabla in lista_tablas:
                 if(tabla["Nombre"] == comando[1]):
                     temp = tabla
 
-        if(temp == ''):
-            print("No existe la tabla "+ comando[1])
-        else:
-            print(temp)
+            if(temp == ''):
+                print("No existe la tabla "+ comando[1])
+            else:
+                print(temp)
+            
 
     elif (len(comando) == 3):
         temp_col = ''
 
     #CONSULTAR REGISTROS Nombre_Tabla
-   
+
         if(comando[1] == "REGISTROS"):
             if(comando[0] == "CONSULTAR"):
                 temp = '' 
@@ -288,7 +303,7 @@ def Consultar_Registros(entrada):
                 for tabla in lista_tablas:
                     if(tabla["Nombre"] == comando[1]):
                             temp = tabla
-                         
+                        
                 if(temp != ''):
                     for columna in temp["Columnas"]:
                         if(columna == comando[2]):
@@ -317,18 +332,5 @@ def Consultar_Registros(entrada):
     #                 if( temp_col== comando[2]):
     #                     print(temp["Columnas"][temp_col]) 
     
-    
-
     else:
         print("Comando incorrecto")
-
-
-
-
-
-
-
-
-
-        
-
